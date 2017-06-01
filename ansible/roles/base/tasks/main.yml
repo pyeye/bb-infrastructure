@@ -1,0 +1,79 @@
+- name: apt | install | OpenSSL
+  apt: name={{ item }} update_cache=yes state=latest
+  with_items:
+    - openssl
+    - libssl-dev
+    - libssl-doc
+  tags:
+    - base
+
+
+- name: apt | install | base packages
+  apt: name={{ item }} update_cache=yes force=yes state=installed
+  with_items:
+    - build-essential
+    - git
+    - curl
+    - libpq-dev
+    - python-dev
+    - python-pip
+    - python-pycurl
+    - whois
+  tags:
+    - base
+
+- name: pip | upgrade | self
+  pip: name=pip state=latest
+  tags:
+    - base
+
+- name: file | mkdir | backend app
+  file: "path={{work_dir}}/src/backend state=directory"
+  tags:
+    - base
+
+- name: file | mkdir | frontend app
+  file: "path={{work_dir}}/src/frontend/build state=directory"
+  tags:
+    - base
+
+- name: file | mkdir | database dump
+  file: "path={{work_dir}}/src/data/dump state=directory"
+  tags:
+    - base
+
+- name: file | mkdir | media
+  file: "path={{work_dir}}/src/media state=directory"
+  tags:
+    - base
+
+- name: file | mkdir | static
+  file: "path={{work_dir}}/src/static state=directory"
+  tags:
+    - base
+
+- name: git | clone | backend
+  git: "repo=https://github.com/pyeye/maddog-back.git dest={{work_dir}}/src/backend/"
+  tags:
+    - base
+    - clone_backend
+
+- name: file | copy | static
+  synchronize: src=/home/arthur/www/maddog/src/static/ dest={{work_dir}}/src/static/
+  tags:
+    - base
+
+- name: sync | folder | frontend build
+  synchronize: src=/home/arthur/www/maddog/src/frontend/build/ dest={{work_dir}}/src/frontend/build/
+  tags:
+    - sync_frontend
+    - base
+
+
+- name: sync | folder | media
+  synchronize: src=/home/arthur/www/maddog/src/media/ dest={{work_dir}}/src/media/
+  tags:
+    - sync_images
+    - base
+
+- include: docker.yml

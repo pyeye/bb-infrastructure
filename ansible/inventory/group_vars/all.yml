@@ -1,0 +1,6 @@
+project_name: borisbar
+project_repo: https://github.com/pyeye/borisbar.git
+
+apt_update_cache: yes
+
+host_distribution: ubuntu-xenial

@@ -1,0 +1,19 @@
+- name: docker | container | nginx
+  docker_container:
+    name: nginx
+    image: pyeye/bb-nginx-dev:latest
+    pull: true
+    state: started
+    restart: yes
+    restart_policy: always
+    networks:
+      - name: borisbar
+    ports:
+    - "80:80"
+    volumes:
+    - "{{work_dir}}/src/frontend/:/srv/www/borisbar/src/frontend/"
+    - "{{work_dir}}/src/media/:/srv/www/borisbar/src/media/"
+    - "{{work_dir}}/src/static/:/srv/www/borisbar/src/static/"
+  tags:
+    - containers
+    - containers_nginx

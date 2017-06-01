@@ -1,0 +1,30 @@
+- name: docker| volume | exists
+  command: docker volume inspect bb_pgdata
+  register: volume_exists
+  failed_when: false
+  
+- name: docker| volume | create
+  command: docker volume create --name bb_pgdata
+  when: volume_exists|failed
+
+- name: docker | container | postgres
+  docker_container:
+    name: postgres
+    image: pyeye/bb-postgres:latest
+    pull: true
+    state: started
+    restart: yes
+    restart_policy: always
+    networks:
+      - name: borisbar
+    volumes:
+      - "bb_pgdata:/var/lib/postgresql/data"
+      - "{{work_dir}}/src/data/dump:/srv/www/borisbar/src/data/dump"
+    ports:
+      - "5432:5432"
+    env:
+      POSTGRES_USER: "{{db_user}}"
+      POSTGRES_DB: "{{db_name}}"
+      POSTGRES_PASSWORD: "{{db_password}}"
+  tags:
+    - containers

@@ -1,0 +1,12 @@
+secret_key: "3oub#b$=9b(hv52@i(1nrwrhtbk2o@yyc&fo^znh^n#9%tf*-h"
+
+email_host: 'smtp.yandex.ru'
+email_host_user: 'noreply@borisbar.com'
+email_host_password: 'noreplyCegthgegth2hfpf'
+email_port: 587
+
+db_host: postgres
+db_name: borisbar
+db_user: borisbar
+db_password: borisbar
+db_port: 5432

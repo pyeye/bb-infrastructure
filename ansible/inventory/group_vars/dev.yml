@@ -1,0 +1,6 @@
+host_user: arthur
+work_dir: /home/arthur/www/borisbar
+django_debug: True
+django_settings_module: core.settings.dev
+
+allowed_hosts: "localhost"
